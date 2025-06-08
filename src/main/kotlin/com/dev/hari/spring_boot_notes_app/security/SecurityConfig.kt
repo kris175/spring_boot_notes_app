@@ -13,6 +13,6 @@ class SecurityConfig {
         return httpSecurity
             .csrf { csrf -> csrf.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .build();
+            .build()
     }
 }
