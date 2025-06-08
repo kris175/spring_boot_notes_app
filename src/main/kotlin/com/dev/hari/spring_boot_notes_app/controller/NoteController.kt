@@ -5,6 +5,7 @@ import com.dev.hari.spring_boot_notes_app.database.repository.NoteRepository
 import org.bson.types.ObjectId
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -20,8 +21,7 @@ class NoteController (
         val id: String?,
         val title: String,
         val content: String,
-        val color: Long,
-        val ownerId: String
+        val color: Long
     )
 
     data class NoteResponse(
@@ -33,7 +33,9 @@ class NoteController (
     )
 
     @PostMapping("/note")
-    fun save(body: NoteRequest) : NoteResponse {
+    fun save(
+        @RequestBody body: NoteRequest
+    ) : NoteResponse {
         val note = repository.save(
             Note(
                 id = body.id?.let { ObjectId(it) } ?: ObjectId.get(),
@@ -41,7 +43,7 @@ class NoteController (
                 content = body.content,
                 color = body.color,
                 createdAt = Instant.now(),
-                ownerId = ObjectId(body.ownerId),
+                ownerId = ObjectId(),
             )
         )
         return note.toResponse()
