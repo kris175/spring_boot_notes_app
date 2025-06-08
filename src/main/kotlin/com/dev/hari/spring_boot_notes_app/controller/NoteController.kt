@@ -3,7 +3,9 @@ package com.dev.hari.spring_boot_notes_app.controller
 import com.dev.hari.spring_boot_notes_app.database.model.Note
 import com.dev.hari.spring_boot_notes_app.database.repository.NoteRepository
 import org.bson.types.ObjectId
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -56,6 +58,13 @@ class NoteController (
         return repository.findByOwnerId(
             ownerId = ObjectId(ownerId)
         ).map { it.toResponse() }
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteById(
+        @PathVariable("id") id: String
+    ) {
+        repository.deleteById(ObjectId(id))
     }
 }
 
