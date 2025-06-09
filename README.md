@@ -26,5 +26,3 @@ A simple, secure Notes app built using **Kotlin**, **Spring Boot**, and **MongoD
 - **Other:** BCrypt, JPA-like repository with Spring Data MongoDB
 
 ---
-
-## 📁 Project Structure
