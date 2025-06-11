@@ -40,11 +40,29 @@ class JwtService (
         return generateToken(userId, "refresh", refreshTokenValidityMs)
     }
 
-//    fun validateAccessToken(token: String) : Boolean {
-//
-//    }
+    fun validateAccessToken(token: String) : Boolean {
+        val claims = parseAllClaims(token) ?: return false
+        val tokenType = claims["type"] as? String ?: return false
+        return tokenType == "access"
+    }
 
-    private fun praseAllClaims(token: String): Claims? {
+    fun validateRefreshToken(token: String) : Boolean {
+        val claims = parseAllClaims(token) ?: return false
+        val tokenType = claims["type"] as? String ?: return false
+        return tokenType == "refresh"
+    }
+
+    fun getUserIdFromToken(token: String): String? {
+        val rawToken = if(token.startsWith("Bearer")) {
+            token.removePrefix("Bearer ")
+        } else {
+            token
+        }
+        val claims = parseAllClaims(rawToken) ?: throw IllegalArgumentException("Invalid token")
+        return claims.subject
+    }
+
+    private fun parseAllClaims(token: String): Claims? {
         return try {
             Jwts.parser()
                 .verifyWith(secretKey)
